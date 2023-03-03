@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block main %}
+<h1>Hello {{ username }}!</h1>
+
+<div class="container">
+    <p>Du hast dich für {{ number }} {{ item }} entschieden gute Wahl!</p>
+    <br>
+    <img src="" alt="Deine Wahl">
+    <p> Bitte gib Deine Kontaktdaten an </p>
+
+    <form action="/order" method="post">
+        <input type="text" name="firstname" placeholder="Vorname">
+        <input type="text" name="lastname" placeholder="Nachname">
+        <input type="text" name="email" placeholder="email">
+        <input type="text" name="street" placeholder="Strasse">
+        <input type="number" step="1" min ="1" name="hausnummer" placeholder="Hausnummer">
+        <input type="number" name="plz" placeholder="Plz">
+        <input type="text" name="city" placeholder="Stadt">
+</div>
+<button class="btn btn-primary" type="submit">Buy</button>
+</div>
+<table>
+<th>
+    Größe
+</th>
+<th>
+    Anzahl
+</th>
+{% for item in bestellungen %}
+<tr>
+    <td>
+        {{ item.size }}
+    </td>
+    <td>
+        {{ item.number }}
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

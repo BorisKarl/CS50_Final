@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Danke schön!
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <p>Vielen Dank!</p>
+    <br>
+    <img src="" alt="Deine Wahl">
+    <p> Du hast folgendes bestellt</p>
+    <p>T-Shirt {{ motiv }}</p>
+    <p>Zum Preis {{ total }} €</p>
+</div>
+<div class="home_link">
+    <form action="/home">
+    <button class="btn btn-primary" type="submit" name="home" values="confirmation">Startseite</button>
+    </form>
+</div>
+{% endblock %}

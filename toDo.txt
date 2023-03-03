@@ -1,0 +1,4 @@
+Session in der App erstellen, damit man sich einloggen kann und besser den db flow folgen kann.
+Vo dem Einfügen in die Datenbank bestello den check machen, ob das alles so richtig ist und dann erst einfügen.
+Papypal integrieren
+

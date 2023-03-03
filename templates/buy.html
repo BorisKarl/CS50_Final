@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+{% block title %}
+
+{% endblock %}
+
+{% block main %}
+<h1>Hello {{ username }}!</h1>
+
+<div clas="container">
+    <p>Kauf eines unserer liebevoll gestalteten supermodischen T-Shirts.</p>
+
+    <form action="/buy" method="post">
+        <img id="shirt_1" name="shirt_1" src="/static/shirt_1.jpg" alt="Tshirt Nummer eins" width="600" height="500">
+        <input type="number" step="1" min="0" id="number" name="number" min="0" max="10" style="margin-top: 1em;">
+</div>
+<button class="btn btn-primary" type="submit">Buy</button>
+
+</form>
+<br>
+<form action="/buy" method="post">
+    <img id="shirt_2" name="shirt_2" src="/static/shirt_2.jpg" alt="Tshirt Nummer zwei" width="600" height="500">
+    <input type="number" step="1" min="0" id="number" name="number" max="10" style="margin-top: 1em;"></div>
+    <button class="btn btn-primary" type="submit">Buy</button>
+</form>
+
+</div>
+
+
+{% endblock %}

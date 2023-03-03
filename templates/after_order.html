@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+Danke schön!
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <p>Vielen Dank!</p>
+    <br>
+    <img src="" alt="Deine Wahl">
+    <p> Ist das richtig ?</p>
+    <p>{{ customer.vorname }} {{ customer.nachname }}</p>
+    <p>{{ customer.email }}</p>
+    <p>{{ customer.strasse }} {{ customer.haus_no }}</p>
+    <p>{{ customer.plz }}{{ customer.stadt }}</p>
+</div>
+<form action="/after_order" method="post">
+<button class="btn btn-primary" type="submit" name="confirmation" values="confirmation">Ja</button>
+<button class="btn btn-primary" type="submit" name="order_again" value="order_again">Nein</button>
+</form>
+
+
+{% endblock %}
