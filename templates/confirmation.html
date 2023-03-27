@@ -1,0 +1,44 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+<h1>{% block title %}Danke für deine Bestellung! {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="invoice_body">
+<div class="invoice">
+    <p>Hallo {{ customer.vorname }}, hier eine Bestellübersicht.</p>
+    <p>Du hast eben auch eine Rechnung per mail von uns bekommen.</p>
+    <br>
+    <p>Deine Bestellung geht an:</p>
+    <p> {{ customer.vorname }} {{ customer.nachname }} <br> {{ customer.strasse }} {{ customer.haus_no }} <br> {{
+        customer.plz }} {{ customer.stadt }}</p>
+    <p>Und das hast Du bestellt: </p>
+    <img src="../{{ att }}" alt="Motiv" id="invoice_img">
+    <div class="invoice_table">
+        <table class="table table-striped">
+            <tr>
+                <th>Produkt</th>
+                <th>Anzahl</th>
+                <th>Preis</th>
+                <th>Versand</th>
+                <th>Gesamt</th>
+            </tr>
+            <tr>
+                <th>{{ produkt.name }}</th>
+                <th> 1 </th>
+                <th>{{ produkt.price }} €</th>
+                <th> 4,99 €</th>
+                <th><strong>{{ produkt.total }} €</strong></th>
+            </tr>
+
+        </table>
+    </div>
+
+    <form action="/" method="get"><button type="submit" id="last_button">Zum Shop</button></form>
+
+
+</div>
+</div>
+
+{% endblock %}

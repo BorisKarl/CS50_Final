@@ -1,25 +1,27 @@
-{% extends "layout.html" %}
+{% extends 'layout.html' %}
 
-{% block title %}
-Bestelle ein Shirt!
-
+{% block header %}
+{% block title %}{% endblock %}
 {% endblock %}
 
-{% block main %}
-<h1>Hello {{ username }}!</h1>
-<div class="container">
-<p>Kauf eines unserer liebevoll gestalteten supermodischen T-Shirts.</p>
+{% block content %}
+<script src="../static/script.js" defer></script>
+<div class="index_body">
+            <div class="intro">
+                <h1>Hier sehen Sie eine Auswahl der Werke der Hundebilder der jungen Künstlerin Mona
+                </h1>
+            </div>
+               
+                
+                    <div class="grid_container">
+                        {% for product in products %}
+                        <a href="/product/{{ product.id }}"><img id="{{ product.id }}" name="{{ product.name }}"
+                                src="static/imgs/{{ product.src }}" alt="{{ product.name }}"><br>{{ product.name }}</a>
+                    
+                        {% endfor %}
+                    </div>
 
-<form action="/index" method="post">
-    <img id="shirt_1" name="shirt_1" src="/static/shirt_1.jpg" alt="Tshirt Nummer eins" width="600" height="500">
-    <input type="number" step="1" min="0" id="number" name="number" min="1" max="10">
-    <button class="btn btn-primary" type="submit" name="eins" value="one">Buy</button>
-</form>
-<br>
-<form action="/index" method="post">
-    <img id="shirt_2" name="shirt_2" src="/static/shirt_2.jpg" alt="Tshirt Nummer zwei" width="600" height="500">
-    <input type="number" step="1" min="0" id="number" name="number" min="1" max="100">
-    <button class="btn btn-primary" type="submit" name="zwei" value="two">Buy</button>
-</form>
-</div>
+            </div>
+        
+    
 {% endblock %}

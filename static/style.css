@@ -1,0 +1,112 @@
+
+
+body {
+    background-color:aquamarine;
+}
+
+
+img {
+    max-width: 50%;
+    height: auto;
+}
+
+
+.grid_container {
+    display: grid;
+    grid-auto-columns: 50px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    justify-items: center;
+    align-items: center;
+    gap: 10px;
+    margin: auto;
+    max-width: 60%;
+}
+
+header {
+    text-align: center;
+}
+
+.intro {
+    text-align: center;
+    margin-top: 2%;
+    margin-bottom: 3%;
+}
+
+.main_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+.product_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1em;
+}
+
+img {
+    transition: 1s;
+}
+
+.product_container img {
+    width: 35%;
+    height: auto;
+}
+
+a {
+    text-decoration: none;
+    text-align: center;
+    color: black;
+}
+
+.input_field {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 1%;
+    margin-bottom: 1.5%;
+}
+
+.preis {
+font-size: x-large;
+margin-top: 1em;
+}
+
+.h_kontakt {
+    text-align: center;
+}
+
+.con_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invoice_table {
+    margin-top: 1%;
+}
+
+.invoice {
+    margin-top: 2%;
+    margin-bottom: 2%;
+}
+.invoice_body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+h1 {
+    margin-top: 1%;
+    text-align: center;
+}
+
+#last_button {
+    margin-bottom: 2%;
+}

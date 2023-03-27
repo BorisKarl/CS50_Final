@@ -1,43 +1,38 @@
-from flask import Flask, flash, redirect, render_template, request, session, g
+from flask import Flask, request, render_template, session, redirect, url_for
+from flask_mail import Mail, Message
 from flask_sqlalchemy import SQLAlchemy
-#from sqlalchemy.orm import sessionmaker
+from sqlalchemy import desc, delete
+import pdfkit
 
-from sqlalchemy import type_coerce, create_engine, ForeignKey, Column, String, Integer, CHAR, Numeric, desc
-#from flask_session import Session
-#from tempfile import mkdtemp
-#from werkzeug.security import check_password_hash, generate_password_hash
-
-# Configure application
 app = Flask(__name__)
 
-# Configure app for sqlAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///namo.sqlite3'
+
+
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop_db.sqlite3'
 db = SQLAlchemy(app)
 
-#engine = create_engine('sqlite:////instance/bestello.sqlite3')
-#Session = sessionmaker(bind=engine)
-#session = Session
+app.config['MAIL_SERVER'] = 'smtp.strato.de'
+app.config['MAIL_DEFAULT_SENDER'] = 'webmaster@borisnielsen.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USE_SSL'] = True
+app.config['MAIL_USERNAME'] = 'webmaster@borisnielsen.com'
+app.config['MAIL_PASSWORD'] = 'monawebshop4321'
+mail = Mail(app)
 
-# db.Model.metadata.reflect(db.engine)
-
-
-# Define model
-class Bestello(db.Model):
-    __tablename__ = 'bestello'
-    #__table_args__ = {'extend_existing': True}
-    # LOC_CODE = db.Column(db.Text, primary_key=True)
+class Order(db.Model):
+    __tablename__ = "order"
     id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String[100])
     item_id = db.Column(db.Integer)
-    price = db.Column(db.Numeric)
+    price = db.Column(db.Numeric(10,2))
     user_id = db.Column(db.Integer)
-    size = db.Column(db.String[100])
-    shipping = db.Column(db.Numeric)
-    total = db.Column(db.Numeric)
-    number = db.Column(db.Integer)
+    shipping = db.Column(db.Numeric(10, 2))
+    total = db.Column(db.Numeric(10, 2))
+
 
 class Customer(db.Model):
     __tablename__ = "customer"
-    id = db.Column(db.Integer, primary_key = True)
+    id = db.Column(db.Integer, primary_key=True)
     vorname = db.Column(db.String[100])
     nachname = db.Column(db.String[100])
     email = db.Column(db.String[100])
@@ -47,66 +42,67 @@ class Customer(db.Model):
     stadt = db.Column(db.String[100])
 
 
-# Configure session to use filesystem (instead of signed cookies)
-#app.config["SESSION_PERMANENT"] = False
-#app.config["SESSION_TYPE"] = "filesystem"
-#Session(app)
+products = [
+    {"id": 1, "name": "Der schauende Hund", "price": 9.99, "src": "motiv_1.png"},
+    {"id": 2, "name": "Der mutige Hund", "price": 29.99, "src": "motiv_2.png"},
+    {"id": 3, "name": "Der fliegende Hund", "price": 39.99, "src": "motiv_3.png"},
+    {"id": 4, "name": "Der Hund im Sommer", "price": 49.99, "src": "motiv_4.png"},
+    {"id": 5, "name": "Der lachende Hund", "price": 59.99, "src": "motiv_5.png"},
+    {"id": 6, "name": "Der Hund mit Punkten", "price": 69.99, "src": "motiv_6.png"},
+    {"id": 7, "name": "Der Hund unter zwei Sonnen", "price": 44.99, "src": "motiv_7.png"},
+    {"id": 8, "name": "Der bunte Hund", "price": 54.99, "src": "motiv_8.png"},
+    {"id": 9, "name": "Der Hund mit Napf", "price": 64.99, "src": "motiv_9.png"},
+]
 
 
 @app.route("/", methods=["GET"])
 def index():
-    return render_template("index.html")
+    return render_template("index.html", products=products)
 
 
-@app.route("/index", methods=["GET", "POST"])
-def buy():
+@app.route("/product/<int:product_id>", methods = ["GET", "POST"])
+def product(product_id):
+    product = None
+    for p in products:
+        if p["id"] == product_id:
+            product = p
+
     if request.method == "GET":
-        return render_template("index.html")
+        return render_template("product.html", product=product)
+    
+            
 
-    if request.method == "POST":
-        # id = session["user_id"]
-
-        user_id = 1
-
-        if request.form.get("eins"):
-            item = "Shirt Motiv 1"
-            item_id = 1
-        else:
-            item = "Shirt Motiv 2"
-            item_id = 2
-
-
-
-        number = request.form.get("number")
-        number = int(number)
-        if (number < 0):
-            return redirect("index.html")
-
-        price = 24.99
-        shipping = 5.99
-        total = (price * number) + shipping
-        size = "m"
-
-        bestell = Bestello(item_id=item_id,price=price, user_id=user_id, size=size,
-                           shipping=shipping, total=total, number=number)
-
-        db.create_all()
-        db.session.add(bestell)
-        db.session.commit()
-        bestellungen = Bestello.query.all()
-        # data = (item_id, price, number, size, shipping, total)
-
-        # (item_id, price, number, size, shipping, total) "number": number,
-
-        return render_template("/order.html", item=item, number=number, bestellungen=bestellungen)
-
-
-@app.route("/order", methods=["GET", "POST"])
+@app.route("/order", methods = ["GET", "POST"])
 def order():
     if request.method == "GET":
-        return render_template("order.html")
+        return render_template("adress.html", product=product)
 
-    else:
+    elif request.method == "POST":
+        id = request.form.get("item")
+       
+        int_id = int(id)
+        item_id = products[int_id - 1]["id"]
+        price = products[int_id - 1]["price"]
+        name = products[int_id - 1]["name"]
+        user_id = 1
+        shipping = 4.99
+        total = shipping + price
+        ordering = Order(item_id=item_id,
+                         name=name,
+                         price=price,
+                         user_id=user_id,
+                         shipping=shipping,
+                         total=total)
+        db.create_all()
+        db.session.add(ordering)
+        db.session.commit()
+      
+        return render_template("order.html", product=products[int_id - 1])
+        
+
+@app.route("/confirmation", methods= ["GET", "POST"])
+def adress():
+    if request.method == "POST":
         vorname = request.form.get("firstname")
         nachname = request.form.get("lastname")
         email = request.form.get("email")
@@ -114,8 +110,7 @@ def order():
         haus_no = request.form.get("hausnummer")
         plz = request.form.get("plz")
         stadt = request.form.get("city")
-
-        customer = Customer(vorname=vorname, 
+        customer = Customer(vorname=vorname,
                             nachname=nachname,
                             email=email,
                             strasse=strasse,
@@ -125,43 +120,79 @@ def order():
         db.create_all()
         db.session.add(customer)
         db.session.commit()
-        return render_template("after_order.html", customer=customer)
 
+        row = Customer.query.order_by(desc(Customer.id)).first()
+        mailadress = row.email
+        produkt = Order.query.order_by(desc(Order.id)).first()
+        src_id = produkt.item_id
+        src = products[src_id - 1]["src"]
+        att = "static/imgs/" + src
+        invoice = render_template("invoice_pdf.html", produkt=produkt, customer=row, att=att)
+        
+        invoice_pdf = pdfkit.from_string(invoice, False, options={"enable-local-file-access": ""})
+        
+        msg = Message('Dein Einkauf bei Mona ',
+                      recipients=[mailadress])
 
+        msg.body = 'Vielen Dank für Deinen Einkauf beim Monawebshop!'
+        msg.html = invoice
+        with app.open_resource(att) as fp:
+            msg.attach("src", "image/png", fp.read())
 
-@app.route("/after_order", methods=["GET", "POST"])
-def after_order():
-        if request.method == "POST":
-            if 'confirmation' in request.form:        
-                row = Bestello.query.order_by(desc(Bestello.item_id)).first()
-                item_id = row.item_id
-
-                print(item_id)
-
-                if item_id == 1:
-                    motiv = "Motiv 1"
-                elif item_id == 2:
-                    motiv = "Motiv 2"
-                else:
-                    return ("/")
-
-                total = row.total
-                total = round(total, 2)
-
-                return render_template("order_confirmation.html", motiv=motiv, total=total)
-            else:
-                last_row = Customer.query.order_by(Customer.id.desc()).first()
-
-                if last_row:
-                    db.session.delete(last_row)
-                    db.session.commit()
-
-                return render_template("order.html")
+        mail.send(msg)
+        
         
 
-@app.route("/home", methods=["GET", "POST"])
-def home():
+        return render_template("confirmation.html", produkt=produkt, customer=row, att=att)
+ 
+@app.route("/delete", methods=["POST"])
+def delete():
+    row = Order.query.order_by(desc(Order.id)).first()
+    Order.query.filter(Order.id == row.id).delete()
+    db.session.commit()
+
     return redirect("/")
 
+
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
+
+
+"""
+
+msg = Message('Dein Einkauf bei Mona',
+                      recipients=[mailadress])
+
+        msg.body = 'Vielen Dank für Deinen Einkauf beim Monawebshop!'
+        with app.open_resource(att) as fp:
+            msg.attach("src", "image/png", fp.read())
+
+        mail.send(msg)
+        
+product = None
+        for p in products:
+            if p["id"] == product_id:
+                product = p
+
+vorname = request.form.get("firstname")
+        nachname = request.form.get("lastname")
+        email = request.form.get("email")
+        strasse = request.form.get("street")
+        haus_no = request.form.get("hausnummer")
+        plz = request.form.get("plz")
+        stadt = request.form.get("city")
+        #shipping = 4.99
+        customer = Customer(vorname=vorname,
+                            nachname=nachname,
+                            email=email,
+                            strasse=strasse,
+                            haus_no=haus_no,
+                            plz=plz,
+                            stadt=stadt)
+        db.create_all()
+        db.session.add(customer)
+        db.session.commit()
+        return render_template("confirmation.html")
+
+
+"""

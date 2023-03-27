@@ -1,0 +1,40 @@
+{% extends 'layout.html' %}
+
+{% block header %}
+<h1>{% block title %}Deine Rechnung {% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div class="invoice_body">
+<div class="invoice">
+    <p>Hallo {{ customer.vorname }}, werfe einen Blick auf deine Bestelldaten!</p>
+    <br>
+    <p>Deine Bestellung geht an:</p>
+    <p> {{ customer.vorname }} {{ customer.nachname }} <br> {{ customer.strasse }} {{ customer.haus_no }} <br> {{ customer.plz }} {{ customer.stadt }}</p>
+    <p>Und das hast Du bestellt: </p>
+    <div class="invoice_table">
+        <table class="table table-striped">
+            <tr>
+                <th>Produkt</th>
+                <th>Anzahl</th>
+                <th>Preis</th>
+                <th>Versand</th>
+                <th>Gesamt</th>
+            </tr>
+            <tr>
+                <th>{{ produkt.name }}</th>
+                <th> 1 </th>
+                <th>{{ produkt.price }} €</th>
+                <th> 4,99 €</th>
+                <th><strong>{{ produkt.total }} €</strong></th>
+            </tr>
+
+        </table>
+    </div>
+
+<p>Vielen Dank für Deine Bestellung im monashop. Bei Fragen, schick uns einfach eine Email an webmaster@borisnielsen.com</p>
+
+</div>
+</div>
+
+{% endblock %}    

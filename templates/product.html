@@ -1,0 +1,17 @@
+{% extends 'layout.html' %}
+    {% block header %}
+    <h1>{% block title %}{{ product.name }}{% endblock %} </h1>
+    {% endblock %}
+        {% block content %}
+        <script src="../static/script_scale_less.js" defer></script>
+        <div class="product_body">
+        <div class="product_container">
+            <img src="../static/imgs/{{ product.src }}" alt="{{ product.name }}">
+            <p class="preis">Preis: {{ product.price }} €</p>
+            <form action="{{ url_for('order') }}" method="post"><button class="btn btn-primary"  type="submit" name="item" id="{{ product.id }}" value="{{ product.id }}">Kaufe "{{ product.name }}"</button>
+            </form>
+            <form action="/" method="get"><button class="btn btn-primary" type="submit">Zur Übersicht</button></form>
+        </div>
+        </div>
+        {% endblock %}
+    
