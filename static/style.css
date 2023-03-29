@@ -6,7 +6,7 @@ body {
 
 
 img {
-    max-width: 50%;
+    max-width: 60%;
     height: auto;
 }
 
@@ -22,6 +22,8 @@ img {
     margin: auto;
     max-width: 60%;
 }
+
+
 
 header {
     text-align: center;
@@ -109,4 +111,44 @@ h1 {
 
 #last_button {
     margin-bottom: 2%;
+}
+
+@media only screen and (max-width: 600px) {
+    .grid_container {
+        display: grid;
+        grid-auto-columns: 50px;
+        grid-template-columns: repeat(1, 1fr);
+        grid-template-rows: repeat(9, 1fr);
+        justify-items: center;
+        align-items: center;
+        gap: 10px;
+        margin: auto;
+        max-width: 90%;
+    }
+    
+    .product_container img {
+        margin-top: 5%;
+        width: 60%;
+        height: auto;
+    }
+
+    .product_container button {
+         align-items: first baseline;
+        }
+    
+    #product_back_button {
+        margin-top: 100%;
+    }
+    
+    .anschrift {
+        text-align: center;
+    }
+
+}
+
+footer {
+    text-align: center;
+    display: block;
+    text-transform:uppercase;
+    
 }
