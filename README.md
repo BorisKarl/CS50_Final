@@ -35,6 +35,7 @@ The last page shows a confirmation page where the user can see what he has order
 Unfortunately pythonanywhere, where the live demo is hosted is not allowing a email api in the free mode, so I had to
 waive on that option. You can find the live demo on
 http://karlgerd.pythonanywhere.com/
+
 No real payment is involved. This is a mock-up shop.
 Fell free to try it out!
 
