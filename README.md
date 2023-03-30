@@ -36,7 +36,6 @@ Unfortunately pythonanywhere, where the live demo is hosted is not allowing a em
 waive on that option. You can find the live demo on
 http://karlgerd.pythonanywhere.com/
 
-No real payment is involved. This is a mock-up shop.
 Fell free to try it out!
 
 ## This was CS50!
