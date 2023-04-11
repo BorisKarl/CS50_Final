@@ -9,7 +9,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///shop_db.sqlite3'
 db = SQLAlchemy(app)
 
-# Mail Configuration
+# Mail Configuration with flask_mail
 app.config['MAIL_SERVER'] = 'smtp.strato.de'
 app.config['MAIL_DEFAULT_SENDER'] = 'webmaster@borisnielsen.com'
 app.config['MAIL_PORT'] = 465
