@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 # Mail Configuration with flask_mail
 app.config['MAIL_SERVER'] = 'smtp.strato.de'
 app.config['MAIL_DEFAULT_SENDER'] = 'xxx@xxx.xxx'
-app.config['MAIL_PORT'] = 465
+app.config['MAIL_PORT'] = xxx
 app.config['MAIL_USE_SSL'] = True
 app.config['MAIL_USERNAME'] = 'xxx@xxx.xxx'
 app.config['MAIL_PASSWORD'] = PASSWORD
